@@ -10,9 +10,10 @@ from rest_framework.decorators import api_view
 # GET 요청이 오면 함수를 호출
 @api_view(['GET'])
 # @있는 것을 python decorator, java annotation
-
 def hello(request):
     return Response("Hello REST API")
+
+
 
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
@@ -43,7 +44,9 @@ def booksAPI(request):
             serializer.save()
             # 삽입한 데이터만 보여줌
             return Response(serializer.data)
+        
         return Response(serializer.errors)
+    
         # 전체 데이터를 보여줌
         # # 테이블의 데이터를 전부 가져오기
         # books = Book.objects.all()
@@ -52,9 +55,18 @@ def booksAPI(request):
         # # 출력
         # return Response(serializer.data)
 
-
     # PUT 방식의 처리 - 삭제하는 경우
-    # elis request.method == 'PUT':
+    # elif request.method == 'PUT':
         
     # DELETE 방식의 처리 - 삭제하는 경우
-    # elis request.method == 'DELETE':
+    # elif request.method == 'DELETE':
+
+
+
+@api_view(['GET'])  # [내용이 달라서] 함수마다 붙여줘야함
+def oneBookAPI(request, bid):
+    # Book 테이블에서 bid 컬럼의 값이 bid 인 값을 찾아옵니다.
+    book = get_object_or_404(Book, bid=bid)
+    # 출력할 수 있도록 변환
+    serializer = BookSerializer(book)
+    return Response(serializer.data)
